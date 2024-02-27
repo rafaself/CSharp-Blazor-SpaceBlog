@@ -1,8 +1,16 @@
 ﻿.sb-nav {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px;
+    margin: 18px;
+}
+
+.teste {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .sb-navmenu-content {
@@ -38,5 +46,3 @@
     font-family: 'Gandhi Sans', sans-serif;
     color: var(--color-surface-op-medium);
 }
-
-.sb-navmenu-content__search: {padding: 40px;}
