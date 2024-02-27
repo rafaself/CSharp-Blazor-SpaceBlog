@@ -1,3 +1,7 @@
+@import "styles/navbar.css";
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: rgba(4, 36, 79, 1);
+    color: #DBDBDB;
 }
