@@ -46,3 +46,7 @@
     font-family: 'Gandhi Sans', sans-serif;
     color: var(--color-surface-op-medium);
 }
+
+.sb-navmenu-content__menu {
+    filter: invert(97%) sepia(2%) saturate(31%) hue-rotate(26deg) brightness(94%) contrast(88%);
+}
