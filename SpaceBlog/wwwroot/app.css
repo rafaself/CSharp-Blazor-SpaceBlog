@@ -1,4 +1,5 @@
 @import "styles/navbar.css";
+@import "styles/home/banner.css";
 
 :root {
     --color-primary: rgba(4, 36, 79, 1);
