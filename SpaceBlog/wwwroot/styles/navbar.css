@@ -1,16 +1,21 @@
 ﻿.sb-nav {
     position: relative;
-    display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 36px;
+    justify-content: space-around;
+}
+
+.sb-navmenu-image {
+    display: inline-block;
 }
 
 .sb-navmenu-searcher {
+    display: inline-block;
     position: absolute;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+    left: 50%;
+    width: 400px;
+    transform: translate(-50%);
 }
 
 .sb-navmenu-content {
@@ -56,5 +61,13 @@
     }
 
 .sb-navmenu-content__menu {
+    display: inline-block;
+    position: absolute;
+    transform: translate(0, -50%);
+    top: 50%;
+    right: 0;
+}
+
+.sb-navmenu-content__menu__icon {
     filter: invert(97%) sepia(2%) saturate(31%) hue-rotate(26deg) brightness(94%) contrast(88%);
 }
