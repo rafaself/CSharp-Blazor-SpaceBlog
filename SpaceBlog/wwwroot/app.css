@@ -1,6 +1,7 @@
 @import "styles/navbar.css";
 @import "styles/home/banner.css";
 @import "styles/home/cards.css";
+@import "styles/widgets/button.css";
 
 :root {
     --color-primary: rgba(4, 36, 79, 1);
