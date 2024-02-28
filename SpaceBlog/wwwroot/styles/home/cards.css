@@ -1,0 +1,33 @@
+﻿.sb-cards {
+    display: flex;
+    max-width: 100%;
+    flex-flow: wrap row;
+    justify-content: space-between;
+    gap: 36px;
+}
+
+.sb-card {
+    border-radius: 9px;
+    overflow: hidden;
+    max-width: 500px;
+}
+
+.sb-card__image__img {
+    width: 100%;
+}
+
+.sb-card__content {
+    background-color: var(--color-secondary-op-low);
+}
+
+.sb-card__content__text {
+    padding: 15px;
+    height: 120px;
+    text-align: justify;
+}
+
+.sb-card__content__actions {
+    padding: 15px;
+    display: flex;
+    justify-content: end;
+}

@@ -1,5 +1,6 @@
 @import "styles/navbar.css";
 @import "styles/home/banner.css";
+@import "styles/home/cards.css";
 
 :root {
     --color-primary: rgba(4, 36, 79, 1);
@@ -7,6 +8,7 @@
     --color-surface: rgba(219, 219, 219, 1);
     --color-secondary-op-high: rgba(218, 56, 67, 0.9);
     --color-surface-op-medium: rgba(219, 219, 219, 0.6);
+    --color-secondary-op-low: rgba(218, 56, 67, 0.3);
 }
 
 html, body {
