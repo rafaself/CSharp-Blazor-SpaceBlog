@@ -1,0 +1,23 @@
+﻿@rendermode InteractiveServer
+@page "/edit"
+
+<PageTitle>Adicionar Publicação - SpaceBlog</PageTitle>
+
+<div class="content-post-image">
+
+	<h3>Adicionar publicação</h3>
+
+	<div class="post-image-form">
+		<input type="file" />
+		<input />
+		<button class="sb-btn" @onclick="AddPost">Enviar</button>
+	</div>
+
+</div>
+
+@code {
+	void AddPost()
+	{
+		Console.WriteLine("Opa");
+	}
+}
