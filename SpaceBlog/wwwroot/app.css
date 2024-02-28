@@ -20,4 +20,12 @@ html, body {
 
 main {
     padding: 24px;
+    max-width: 100%;
+    min-width: 300px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
 }
