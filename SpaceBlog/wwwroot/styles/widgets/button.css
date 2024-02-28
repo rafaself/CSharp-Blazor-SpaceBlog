@@ -1,4 +1,16 @@
 ﻿.sb-btn {
-    padding: 6px 12px;
+    padding: 6px 18px;
     border-radius: 9px;
+    color: var(--color-surface);
+    background-color: var(--color-secondary-op-high8);
+    border: none;
 }
+
+    .sb-btn:hover {
+        background-color: var(--color-secondary);
+        color: var(--color-surface);
+    }
+
+    .sb-btn:active {
+        background-color: var(--color-secondary-op-high8);
+    }

@@ -1,4 +1,6 @@
-﻿<div class="sb-card">
+﻿@using SpaceBlog.Components.Widgets
+
+<div class="sb-card">
 
 	<div class="sb-card__image">
 		<img class="sb-card__image__img" src="images/card-model.png" />
@@ -11,7 +13,7 @@
 		</div>
 
 		<div class="sb-card__content__actions">
-			<SbButton></SbButton>
+			<button class="sb-btn">Ver conteúdo</button>
 		</div>
 
 	</div>
@@ -19,5 +21,8 @@
 </div>
 
 @code {
-
+	public void Printa()
+	{
+		Console.WriteLine("printa mesmo");
+	}
 }
