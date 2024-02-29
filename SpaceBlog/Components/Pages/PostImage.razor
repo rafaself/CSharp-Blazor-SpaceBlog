@@ -21,18 +21,22 @@
 		<input />
 		<button class="sb-btn">Enviar</button>
 	</div>
+	@if (isLoading)
+	{
+		<p>Loading...</p>
+	}
 
 </div>
 
 @code {
-	private List<IBrowserFile> loadedFiles = new();
+	private IBrowserFile? loadedFile;
 	private long maxFileSize = 1024 * 150;
 	private bool isLoading;
 
 	private async Task LoadFile(InputFileChangeEventArgs e)
 	{
 		isLoading = true;
-		loadedFiles.Clear();
+		loadedFile = null;
 
 		try
 		{
@@ -43,14 +47,12 @@
 			await using FileStream fs = new(path, FileMode.Create);
 			await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
 
-			loadedFiles.Add(file);
-			Console.WriteLine(loadedFiles[0]);
+			loadedFile = file;
+			Console.WriteLine(loadedFile.Name);
+			Console.WriteLine(loadedFile.ContentType);
 			Console.WriteLine("chamou");
-			// Logger.LogInformation(
-			// 		"Unsafe Filename: {UnsafeFilename} File saved: {Filename}",
-			// 		file.Name, trustedFileName);
-
-		} catch (Exception exc)
+		}
+		catch (Exception exc)
 		{
 			Console.WriteLine("Opa");
 			Console.WriteLine(exc);
@@ -60,7 +62,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		string response = 
+		string response =
 			await Client.GetStringAsync("https://localhost:7014/HelloWorld");
 		Console.WriteLine(response);
 	}
