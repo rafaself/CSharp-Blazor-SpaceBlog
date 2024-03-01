@@ -14,17 +14,17 @@ public class Controllers : ControllerBase
 	}
 
 	[HttpPost]
-	public IActionResult PostContent([FromForm] IFormFile form)
+	public IActionResult PostContent([FromForm] IEnumerable<IFormFile> form)
 	{
+		Console.WriteLine("chamou o endpoint");
 		try
 		{
-			// Faça o que quiser com os dados do formulário aqui
-			Console.WriteLine(form.FileName);
-
+			Console.WriteLine(form);
 			return Ok("Dados de formulário recebidos com sucesso!");
 		}
 		catch (Exception ex)
 		{
+			Console.WriteLine(ex);
 			return Ok();
 		}
 	}
