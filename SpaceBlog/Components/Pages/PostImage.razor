@@ -6,6 +6,7 @@
 @using System.IO
 @using Microsoft.AspNetCore.Hosting
 @using Microsoft.Extensions.Logging
+@using System.Text
 @inject IWebHostEnvironment Environment
 
 @page "/edit"
@@ -16,11 +17,16 @@
 
 	<h3>Adicionar publicação</h3>
 
-	<div class="post-image-form">
-		<InputFile OnChange="LoadFile" />
-		<input />
-		<button class="sb-btn" @onclick="AddPost">Enviar</button>
-	</div>
+	<form method="post" @onsubmit="AddPost" @formname="add-picture-form" class="post-image-form">
+
+		<InputFile required OnChange="LoadFile" />
+		
+		<input type="text" required @bind-value="PostText" />
+		
+		<button class="sb-btn" type="submit" @onclick="AddPost">Enviar</button>
+	
+	</form>
+
 	@if (isLoading)
 	{
 		<p>Loading...</p>
@@ -29,6 +35,7 @@
 </div>
 
 @code {
+	string? PostText;
 	private IBrowserFile? loadedFile;
 	private long maxFileSize = 1024 * 150;
 	private bool isLoading;
@@ -43,7 +50,12 @@
 		{
 			var file = e.GetMultipleFiles(1)[0];
 			var trustedFileName = Path.GetRandomFileName();
-			var path = Path.Combine(Environment.ContentRootPath, Environment.EnvironmentName, "unsafe_uploads", trustedFileName);
+			var path = Path.Combine(
+				Environment.ContentRootPath,
+				Environment.EnvironmentName,
+				"unsafe_uploads",
+				trustedFileName
+			);
 
 			await using FileStream fs = new(path, FileMode.Create);
 			await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
@@ -56,14 +68,9 @@
 						content: fileContent,
 						name: "\"files\"",
 						fileName: file.Name);
-			Console.WriteLine(content);
-			Console.WriteLine(loadedFile.Name);
-			Console.WriteLine(loadedFile.ContentType);
-			Console.WriteLine("chamou");
 		}
 		catch (Exception exc)
 		{
-			Console.WriteLine("Opa");
 			Console.WriteLine(exc);
 		}
 		isLoading = false;
@@ -72,13 +79,31 @@
 	protected override async Task OnInitializedAsync()
 	{
 		string response =
-			await Client.GetStringAsync("https://localhost:7014/HelloWorld");
-		Console.WriteLine(response);
+			await Client.GetStringAsync("https://localhost:7014/Post");
 	}
 
 	public async Task AddPost()
 	{
-		var response = await Client.PostAsync("https://localhost:7014/HelloWorld", new StreamContent(loadedFile!.OpenReadStream()));
-		Console.WriteLine(response.ToString());
+		using StringContent jsonContent = new(
+			JsonSerializer.Serialize(new { Text = PostText }),
+				Encoding.UTF8,
+				"application/json"
+		);
+
+		if (loadedFile is not null || !string.IsNullOrEmpty(PostText))
+		{
+			await Client.PostAsync(
+				"https://localhost:7014/Post",
+				jsonContent
+			);
+			await Client.PostAsync(
+				"https://localhost:7014/Post/AddFile?id=0",
+				new StreamContent(loadedFile!.OpenReadStream())
+			);
+		} 
+		else
+		{
+			Console.WriteLine("Formulário inválido!");
+		}
 	}
 }
