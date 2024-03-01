@@ -19,7 +19,7 @@
 	<div class="post-image-form">
 		<InputFile OnChange="LoadFile" />
 		<input />
-		<button class="sb-btn">Enviar</button>
+		<button class="sb-btn" @onclick="AddPost">Enviar</button>
 	</div>
 	@if (isLoading)
 	{
@@ -32,6 +32,7 @@
 	private IBrowserFile? loadedFile;
 	private long maxFileSize = 1024 * 150;
 	private bool isLoading;
+	MultipartFormDataContent content = new();
 
 	private async Task LoadFile(InputFileChangeEventArgs e)
 	{
@@ -48,6 +49,14 @@
 			await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
 
 			loadedFile = file;
+			var fileContent =
+						new StreamContent(file.OpenReadStream(maxFileSize));
+
+			content.Add(
+						content: fileContent,
+						name: "\"files\"",
+						fileName: file.Name);
+
 			Console.WriteLine(loadedFile.Name);
 			Console.WriteLine(loadedFile.ContentType);
 			Console.WriteLine("chamou");
@@ -65,5 +74,12 @@
 		string response =
 			await Client.GetStringAsync("https://localhost:7014/HelloWorld");
 		Console.WriteLine(response);
+	}
+
+	public async Task AddPost()
+	{
+		Console.WriteLine("ADDING");
+
+		await Client.PostAsync("https://localhost:7014/HelloWorld", content);
 	}
 }
