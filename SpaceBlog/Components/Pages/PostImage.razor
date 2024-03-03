@@ -1,15 +1,17 @@
 ﻿@rendermode InteractiveServer
-@using System.Text.Json
-@using System.Text.Json.Serialization
-@inject HttpClient Client
-@using System
-@using System.IO
-@using Microsoft.AspNetCore.Hosting
-@using Microsoft.Extensions.Logging
-@using System.Text
-@inject IWebHostEnvironment Environment
 
 @page "/edit"
+
+@using System
+@using System.IO
+@using System.Net.Http.Headers
+@using System.Text
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Logging
+
+@inject IHttpClientFactory ClientFactory
 
 <PageTitle>Adicionar Publicação - SpaceBlog</PageTitle>
 
@@ -17,14 +19,14 @@
 
 	<h3>Adicionar publicação</h3>
 
-	<form method="post" @onsubmit="AddPost" @formname="add-picture-form" class="post-image-form">
+	<form method="post" @formname="add-picture-form" @onsubmit="SendImage" class="post-image-form">
+		<AntiforgeryToken />
 
-		<InputFile required OnChange="LoadFile" />
-		
+		<InputFile required OnChange="OnInputFileChange" />
+
 		<input type="text" required @bind-value="PostText" />
-		
-		<button class="sb-btn" type="submit" @onclick="AddPost">Enviar</button>
-	
+
+		<button class="sb-btn" type="submit">Enviar</button>
 	</form>
 
 	@if (isLoading)
@@ -37,73 +39,36 @@
 @code {
 	string? PostText;
 	private IBrowserFile? loadedFile;
-	private long maxFileSize = 1024 * 150;
+	private long maxFileSize = 1024 * 1024 * 150;
 	private bool isLoading;
 	MultipartFormDataContent content = new();
 
-	private async Task LoadFile(InputFileChangeEventArgs e)
+	void OnInputFileChange(InputFileChangeEventArgs e)
 	{
-		isLoading = true;
-		loadedFile = null;
-
-		try
-		{
-			var file = e.GetMultipleFiles(1)[0];
-			var trustedFileName = Path.GetRandomFileName();
-			var path = Path.Combine(
-				Environment.ContentRootPath,
-				Environment.EnvironmentName,
-				"unsafe_uploads",
-				trustedFileName
-			);
-
-			await using FileStream fs = new(path, FileMode.Create);
-			await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
-
-			loadedFile = file;
-			var fileContent =
-						new StreamContent(file.OpenReadStream(maxFileSize));
-
-			content.Add(
-						content: fileContent,
-						name: "\"files\"",
-						fileName: file.Name);
-		}
-		catch (Exception exc)
-		{
-			Console.WriteLine(exc);
-		}
-		isLoading = false;
+		loadedFile = e.File;
+		Console.WriteLine(loadedFile.Name);
 	}
 
-	protected override async Task OnInitializedAsync()
+	async Task SendImage()
 	{
-		string response =
-			await Client.GetStringAsync("https://localhost:7014/Post");
-	}
+		using var content = new MultipartFormDataContent();
 
-	public async Task AddPost()
-	{
-		using StringContent jsonContent = new(
-			JsonSerializer.Serialize(new { Text = PostText }),
-				Encoding.UTF8,
-				"application/json"
+		var fileContent = new StreamContent(loadedFile!.OpenReadStream(maxFileSize));
+
+		fileContent.Headers.ContentType = new MediaTypeHeaderValue(loadedFile.ContentType);
+
+		content.Add(
+			name: "files",
+			content: fileContent,
+			fileName: loadedFile.Name
 		);
 
-		if (loadedFile is not null || !string.IsNullOrEmpty(PostText))
-		{
-			await Client.PostAsync(
-				"https://localhost:7014/Post",
-				jsonContent
-			);
-			await Client.PostAsync(
-				"https://localhost:7014/Post/AddFile?id=0",
-				new StreamContent(loadedFile!.OpenReadStream())
-			);
-		} 
-		else
-		{
-			Console.WriteLine("Formulário inválido!");
-		}
+		var client = ClientFactory.CreateClient();
+
+		var response = await client.PostAsync(
+			"https://localhost:7014/Post/AddFile",
+			content
+		);
 	}
+
 }

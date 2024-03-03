@@ -23,13 +23,13 @@ public class PostController : ControllerBase
 	}
 
 	[HttpPost("AddFile")]
-	public IActionResult AddFileToPost([FromForm] IEnumerable<IFormFile> form, [FromQuery] int id)
+	public IActionResult AddFileToPost([FromForm] IEnumerable<IFormFile> files, [FromQuery] int id)
 	{
 		Console.WriteLine("chamou o endpoint");
-		Console.WriteLine(id);
 		try
 		{
-			Console.WriteLine(form);
+			Console.WriteLine(files);
+			Console.WriteLine(files.Count());
 			return Ok("Dados de formulário recebidos com sucesso!");
 		}
 		catch (Exception ex)
