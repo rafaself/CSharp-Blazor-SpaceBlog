@@ -23,14 +23,27 @@ public class PostController : ControllerBase
 	}
 
 	[HttpPost("AddFile")]
-	public IActionResult AddFileToPost([FromForm] IEnumerable<IFormFile> files, [FromQuery] int id)
+	public async Task<IActionResult> AddFileToPost([FromForm] IEnumerable<IFormFile> files, [FromQuery] int id)
 	{
-		Console.WriteLine("chamou o endpoint");
 		try
 		{
 			Console.WriteLine(files);
 			Console.WriteLine(files.Count());
-			return Ok("Dados de formulário recebidos com sucesso!");
+			var file = files.FirstOrDefault();
+			using var ms = new MemoryStream();
+
+			await file!.CopyToAsync(ms);
+
+			var myArray = ms.ToArray();
+
+			var image64 = Convert.ToBase64String(myArray);
+
+            foreach (var item in image64)
+            {
+				Console.Write(item);
+            }
+
+            return Ok("Dados de formulário recebidos com sucesso!");
 		}
 		catch (Exception ex)
 		{
