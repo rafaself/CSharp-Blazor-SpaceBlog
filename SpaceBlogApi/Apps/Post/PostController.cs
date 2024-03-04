@@ -23,12 +23,11 @@ public class PostController : ControllerBase
 	}
 
 	[HttpPost("AddFile")]
-	public async Task<IActionResult> AddFileToPost([FromForm] IEnumerable<IFormFile> files, [FromQuery] int id)
+	public async Task<IActionResult> AddFileToPost([FromForm] IEnumerable<IFormFile> files, [FromForm] string texto)
 	{
+		Console.WriteLine(texto);
 		try
 		{
-			Console.WriteLine(files);
-			Console.WriteLine(files.Count());
 			var file = files.FirstOrDefault();
 			using var ms = new MemoryStream();
 
@@ -47,7 +46,6 @@ public class PostController : ControllerBase
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex);
 			return Ok();
 		}
 	}
