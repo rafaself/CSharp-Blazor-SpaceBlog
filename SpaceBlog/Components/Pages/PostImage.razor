@@ -19,15 +19,24 @@
 
 	<h3>Adicionar publicação</h3>
 
-	<form method="post" @formname="add-picture-form" @onsubmit="SendImage" class="post-image-form">
-		<AntiforgeryToken />
 
-		<InputFile required OnChange="OnInputFileChange" />
+	<div class="post-image-form">
+		<form method="post" @formname="add-picture-form" @onsubmit="SendImage" class="post-image-form-content">
+			<AntiforgeryToken />
 
-		<input type="text" required @bind-value="PostText" />
+			<div class="content-post-image__fields">
+				<label for="input-test">Escolha um arquivo:</label>
+				<InputFile id="input-test" class="sb-input-file" required OnChange="OnInputFileChange" />
+			</div>
 
-		<button class="sb-btn" type="submit">Enviar</button>
-	</form>
+			<div class="content-post-image__fields">
+				<label>Descrição do texto:</label>
+				<input type="text" required @bind-value="PostText" class="content-post-image__input-text" placeholder="Digite a descrição aqui" />
+			</div>
+
+			<button class="sb-btn" type="submit">Enviar</button>
+		</form>
+	</div>
 
 	@if (isLoading)
 	{
@@ -41,7 +50,6 @@
 	private IBrowserFile? loadedFile;
 	private long maxFileSize = 1024 * 1024 * 150;
 	private bool isLoading;
-	MultipartFormDataContent content = new();
 
 	void OnInputFileChange(InputFileChangeEventArgs e)
 	{
