@@ -13,22 +13,14 @@ public class PostController : ControllerBase
 		return "Hello World do Post!";
 	}
 
-
 	[HttpPost]
-	public void CreatePost([FromBody] PostModel post)
-	{
-		Console.WriteLine(post.Text);
-		Console.WriteLine("chama");
-		//PostModel Post = new PostModel(text);
-	}
-
-	[HttpPost("AddFile")]
-	public async Task<IActionResult> AddFileToPost([FromForm] IEnumerable<IFormFile> files, [FromForm] string texto)
+	public async Task<IActionResult> AddFileToPost([FromForm] IEnumerable<IFormFile> files, [FromForm] string text)
 	{
 		Console.WriteLine(texto);
 		try
 		{
 			var file = files.FirstOrDefault();
+
 			using var ms = new MemoryStream();
 
 			await file!.CopyToAsync(ms);
@@ -37,16 +29,11 @@ public class PostController : ControllerBase
 
 			var image64 = Convert.ToBase64String(myArray);
 
-            foreach (var item in image64)
-            {
-				Console.Write(item);
-            }
-
             return Ok("Dados de formulário recebidos com sucesso!");
 		}
 		catch (Exception ex)
 		{
-			return Ok();
+			return BadRequest(ex);
 		}
 	}
 }

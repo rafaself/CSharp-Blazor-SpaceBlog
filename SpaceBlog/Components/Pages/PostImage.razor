@@ -19,14 +19,13 @@
 
 	<h3>Adicionar publicação</h3>
 
-
 	<div class="post-image-form">
 		<form method="post" @formname="add-picture-form" @onsubmit="SendContent" class="post-image-form-content">
 			<AntiforgeryToken />
 
 			<div class="content-post-image__fields">
 				<label for="input-test">Escolha um arquivo:</label>
-				<InputFile id="input-test" class="sb-input-file" required OnChange="OnInputFileChange" />
+				<InputFile type="file" accept="image/*" id="input-test" class="sb-input-file" required OnChange="OnInputFileChange" />
 			</div>
 
 			<div class="content-post-image__fields">
@@ -71,18 +70,18 @@
 			fileName: loadedFile.Name
 		);
 
-
 		content.Add(
-			name: "texto que vem",
+			name: "text",
 			content: new StringContent(PostText ?? "Sem descrição")
 		);
 
 		var client = ClientFactory.CreateClient();
 
 		var response = await client.PostAsync(
-			"https://localhost:7014/Post/AddFile",
+			"https://localhost:7014/Post",
 			content
 		);
+
 		isLoading = false;
 	}
 
