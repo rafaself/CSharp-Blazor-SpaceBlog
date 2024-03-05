@@ -4,17 +4,17 @@
 @inject IHttpClientFactory ClientFactory
 
 <div class="sb-cards">
-	@for (int i = 0; i < 9; i++)
+	@foreach(var post in posts!)
 	{
-		<Card />
+		<Card imageSource="@post.ImageBase64" />
 	}
 </div>
 
 @code {
 
+	List<Post>? posts = [];
 
-
-	protected override async void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
 		await ListAllPosts();
 	}
@@ -27,9 +27,8 @@
 
 		var jsonResponse = await response.Content.ReadAsStringAsync();
 
-		var teste = JsonSerializer.Deserialize<List<Post>>(jsonResponse);
-
-		Console.WriteLine(teste!.Count());
+		posts = JsonSerializer.Deserialize<List<Post>>(jsonResponse);
+		Console.WriteLine(posts!.Count());
 	}
 
 	public class Post

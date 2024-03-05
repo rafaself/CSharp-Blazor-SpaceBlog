@@ -3,7 +3,7 @@
 <div class="sb-card">
 
 	<div class="sb-card__image">
-		<img class="sb-card__image__img" src="images/card-model.png" />
+		<img class="sb-card__image__img" src="@imageSource" />
 	</div>
 
 	<div class="sb-card__content">
@@ -21,8 +21,6 @@
 </div>
 
 @code {
-	public void Printa()
-	{
-		Console.WriteLine("printa mesmo");
-	}
+	[Parameter]
+	public string imageSource { get; set; } = string.Empty;
 }
