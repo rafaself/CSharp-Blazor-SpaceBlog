@@ -1,6 +1,8 @@
-﻿namespace SpaceBlogDb.Repositories.Interfaces;
+﻿using SpaceBlogDb.Models.Interfaces;
 
-public interface IBaseRepository<TEntity> where TEntity : class
+namespace SpaceBlogDb.Repositories.Interfaces;
+
+public interface IBaseRepository<TEntity> where TEntity : class, IBaseModel
 {
 	public void Add(TEntity entity);
 }

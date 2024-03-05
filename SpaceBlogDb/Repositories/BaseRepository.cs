@@ -1,8 +1,9 @@
-﻿using SpaceBlogDb.Repositories.Interfaces;
+﻿using SpaceBlogDb.Models.Interfaces;
+using SpaceBlogDb.Repositories.Interfaces;
 
 namespace SpaceBlogDb.Repositories;
 
-public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
+public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IBaseModel
 {
 	protected CustomDbContext _dbContext;
 
