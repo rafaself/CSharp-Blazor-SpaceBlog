@@ -9,7 +9,7 @@
 	<div class="sb-card__content">
 
 		<div class="sb-card__content__text">
-			A lua é um satélite da Terra. Ela tem uma influência em fatores naturais da Terra devido a sua gravidade.
+			@text
 		</div>
 
 		<div class="sb-card__content__actions">
@@ -23,4 +23,7 @@
 @code {
 	[Parameter]
 	public string imageSource { get; set; } = string.Empty;
+
+	[Parameter]
+	public string text { get; set; } = "Sem texto";
 }

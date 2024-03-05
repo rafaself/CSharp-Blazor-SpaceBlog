@@ -1,12 +1,13 @@
 ﻿@using SpaceBlog.Components.Widgets
 @using System.Text.Json
+@using System.Text.Json.Serialization
 
 @inject IHttpClientFactory ClientFactory
 
 <div class="sb-cards">
 	@foreach(var post in posts!)
 	{
-		<Card imageSource="@post.ImageBase64" />
+		<Card imageSource="@post.ImageBase64" text="@post.Text" />
 	}
 </div>
 
@@ -28,13 +29,19 @@
 		var jsonResponse = await response.Content.ReadAsStringAsync();
 
 		posts = JsonSerializer.Deserialize<List<Post>>(jsonResponse);
-		Console.WriteLine(posts!.Count());
+
+		foreach(var post in posts!)
+		{
+			Console.WriteLine(post.Text);
+		}
 	}
 
 	public class Post
 	{
 		public int Id { get; set; }
+		[JsonPropertyName("text")]
 		public string Text { get; set; } = string.Empty;
+		[JsonPropertyName("imageBase64")]
 		public string ImageBase64 { get; set; } = string.Empty;
 	}
 }
