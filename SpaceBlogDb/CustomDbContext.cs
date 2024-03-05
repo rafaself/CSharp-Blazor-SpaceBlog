@@ -15,7 +15,10 @@ public class CustomDbContext : DbContext
 	
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
-		base.OnConfiguring(optionsBuilder);
+		string connectionString = "User ID=root;Password=rafa123;Host=localhost;Port=5432;Database=spaceblogdb;";
+
+		optionsBuilder
+			.UseNpgsql(connectionString);
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
