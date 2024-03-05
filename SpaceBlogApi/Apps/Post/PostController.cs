@@ -16,7 +16,7 @@ public class PostController : ControllerBase
 	[HttpPost]
 	public async Task<IActionResult> AddFileToPost([FromForm] IEnumerable<IFormFile> files, [FromForm] string text)
 	{
-		Console.WriteLine(texto);
+		Console.WriteLine(text);
 		try
 		{
 			var file = files.FirstOrDefault();

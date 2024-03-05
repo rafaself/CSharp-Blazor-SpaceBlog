@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SpaceBlogDb.Models;
 
 namespace SpaceBlogDb;
 
 public class CustomDbContext : DbContext
 {
 	
+	public DbSet<Post> Posts { get; set; }
+
 	public CustomDbContext()
 	{
 
