@@ -14,4 +14,14 @@ public class PostUseCases
 
 		await dbContext.SaveChangesAsync();
 	}
+
+	public static async Task<IList<Post>> List()
+	{
+		var dbContext = new CustomDbContext();
+		PostsRepository postsRepository = new(dbContext);
+
+		var allPosts = await postsRepository.List();
+
+		return allPosts;
+	}
 }

@@ -10,4 +10,8 @@
     <Folder Include="Development\unsafe_uploads\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SpaceBlogDb\SpaceBlogDb.csproj" />
+  </ItemGroup>
+
 </Project>

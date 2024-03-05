@@ -1,4 +1,7 @@
 ﻿@using SpaceBlog.Components.Widgets
+@using System.Text.Json
+
+@inject IHttpClientFactory ClientFactory
 
 <div class="sb-cards">
 	@for (int i = 0; i < 9; i++)
@@ -6,3 +9,33 @@
 		<Card />
 	}
 </div>
+
+@code {
+
+
+
+	protected override async void OnInitialized()
+	{
+		await ListAllPosts();
+	}
+
+	public async Task ListAllPosts()
+	{
+		var client = ClientFactory.CreateClient();
+
+		var response = await client.GetAsync("https://localhost:7014/Post");
+
+		var jsonResponse = await response.Content.ReadAsStringAsync();
+
+		var teste = JsonSerializer.Deserialize<List<Post>>(jsonResponse);
+
+		Console.WriteLine(teste!.Count());
+	}
+
+	public class Post
+	{
+		public int Id { get; set; }
+		public string Text { get; set; } = string.Empty;
+		public string ImageBase64 { get; set; } = string.Empty;
+	}
+}

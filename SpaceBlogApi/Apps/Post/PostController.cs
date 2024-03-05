@@ -3,15 +3,14 @@ using SpaceBlogDb.UsesCases;
 
 namespace SpaceBlogApi.Apps.Post;
 
-
 [ApiController]
 [Route("/Post")]
 public class PostController : ControllerBase
 {
 	[HttpGet]
-	public ActionResult<string> SayHelloWorld()
+	public async Task<IList<SpaceBlogDb.Models.Post>> ListPosts()
 	{
-		return "Hello World do Post!";
+		return await PostUseCases.List();
 	}
 
 	[HttpPost]
