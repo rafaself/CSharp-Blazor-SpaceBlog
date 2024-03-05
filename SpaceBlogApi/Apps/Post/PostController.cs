@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SpaceBlogDb.UsesCases;
 
 namespace SpaceBlogApi.Apps.Post;
 
@@ -16,7 +17,6 @@ public class PostController : ControllerBase
 	[HttpPost]
 	public async Task<IActionResult> AddFileToPost([FromForm] IEnumerable<IFormFile> files, [FromForm] string text)
 	{
-		Console.WriteLine(text);
 		try
 		{
 			var file = files.FirstOrDefault();
@@ -28,6 +28,12 @@ public class PostController : ControllerBase
 			var myArray = ms.ToArray();
 
 			var image64 = Convert.ToBase64String(myArray);
+
+			await PostUseCases.Create(new ()
+			{
+				Text = text,
+				ImageBase64 = image64
+			});
 
             return Ok("Dados de formulário recebidos com sucesso!");
 		}
