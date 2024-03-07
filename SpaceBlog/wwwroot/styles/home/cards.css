@@ -12,8 +12,15 @@
     max-width: 500px;
 }
 
+.sb-card__image {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    background: #ffefef99;
+}
+
 .sb-card__image__img {
-    width: 100%;
+    max-height: 100%;
 }
 
 .sb-card__content {
