@@ -1,9 +1,9 @@
 ﻿.sb-cards {
-    display: flex;
+    display: grid;
     max-width: 100%;
-    flex-flow: wrap row;
-    justify-content: space-between;
     gap: 36px;
+    grid: auto-flow / repeat(3, [line1 line2 line3] 450px);
+    justify-content: space-between;
 }
 
 .sb-card {

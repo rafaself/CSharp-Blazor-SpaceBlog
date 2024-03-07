@@ -11,7 +11,7 @@ public class PostController : ControllerBase
 	public async Task<IList<SpaceBlogDb.Models.Post>> ListPosts()
 	{
 		return await PostUseCases.List();
-	}
+	}	
 
 	[HttpPost]
 	public async Task<IActionResult> AddFileToPost([FromForm] IEnumerable<IFormFile> files, [FromForm] string text)
